@@ -58,10 +58,20 @@ namespace WinTchat
 
                 WebClient wc = new WebClient();
 
+<<<<<<< HEAD
 
                 wc.DownloadFile(new Uri(profilePictureUrl),"C:\\profilePicture.jpg");
+=======
+                string startupPath = Environment.CurrentDirectory;
+                bool exists = System.IO.Directory.Exists(startupPath + "\\tmp");
+
+                if (!exists)
+                    System.IO.Directory.CreateDirectory(startupPath + "\\tmp");
+
+                wc.DownloadFile(new Uri(profilePictureUrl), startupPath + "\\tmp\\profilePicture.jpg");
+>>>>>>> eaa9678d1279647d0b7cb4639bc3075fadc42480
                 //pbFbPicture.Image = Image.FromFile("C:\\Users\\pbrecko\\Documents\\EPSI\\NoSQL\\TP\\profilePicture.jpg");
-                ResizeImage("C:\\profilePicture.jpg", pbFbPicture);
+                ResizeImage(startupPath + "\\tmp\\profilePicture.jpg", pbFbPicture);
             }
             catch (FacebookApiException ex)
             {
