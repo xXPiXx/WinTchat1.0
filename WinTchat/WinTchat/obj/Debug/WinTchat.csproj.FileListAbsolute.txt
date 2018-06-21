@@ -26,6 +26,7 @@ C:\Users\pbrecko\source\repos\WinTchat\WinTchat\bin\Debug\Newtonsoft.Json.dll
 C:\Users\pbrecko\source\repos\WinTchat\WinTchat\bin\Debug\Newtonsoft.Json.xml
 C:\Users\pbrecko\source\repos\WinTchat\WinTchat\obj\Debug\WinTchat.Menu.resources
 <<<<<<< HEAD
+<<<<<<< HEAD
 C:\Users\pbrecko\Documents\EPSI\NoSQL\TP\FbWinforms\WinTchat\WinTchat\bin\Debug\WinTchat.exe.config
 C:\Users\pbrecko\Documents\EPSI\NoSQL\TP\FbWinforms\WinTchat\WinTchat\bin\Debug\WinTchat.exe
 C:\Users\pbrecko\Documents\EPSI\NoSQL\TP\FbWinforms\WinTchat\WinTchat\bin\Debug\WinTchat.pdb
@@ -80,3 +81,5 @@ C:\Users\Olivier\Desktop\EPSI\WorkAgile\WinTchat1.0\WinTchat\WinTchat\obj\Debug\
 C:\Users\Olivier\Desktop\EPSI\WorkAgile\WinTchat1.0\WinTchat\WinTchat\obj\Debug\WinTchat.Properties.Resources.resources
 C:\Users\Olivier\Desktop\EPSI\WorkAgile\WinTchat1.0\WinTchat\WinTchat\obj\Debug\WinTchat.csproj.GenerateResource.Cache
 >>>>>>> eaa9678d1279647d0b7cb4639bc3075fadc42480
+=======
+>>>>>>> parent of 53b08a7... nope

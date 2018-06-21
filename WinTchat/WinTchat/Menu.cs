@@ -58,8 +58,11 @@ namespace WinTchat
 
                 WebClient wc = new WebClient();
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> parent of 53b08a7... nope
                 wc.DownloadFile(new Uri(profilePictureUrl),"C:\\profilePicture.jpg");
 
                 string startupPath = Environment.CurrentDirectory;
