@@ -58,9 +58,9 @@ namespace WinTchat
 
                 WebClient wc = new WebClient();
 
-                wc.DownloadFile(new Uri(profilePictureUrl),"C:\\Users\\pbrecko\\Documents\\EPSI\\NoSQL\\TP\\profilePicture.jpg");
+                wc.DownloadFile(new Uri(profilePictureUrl),"C:\\profilePicture.jpg");
                 //pbFbPicture.Image = Image.FromFile("C:\\Users\\pbrecko\\Documents\\EPSI\\NoSQL\\TP\\profilePicture.jpg");
-                ResizeImage("C:\\Users\\pbrecko\\Documents\\EPSI\\NoSQL\\TP\\profilePicture.jpg", pbFbPicture);
+                ResizeImage("C:\\profilePicture.jpg", pbFbPicture);
             }
             catch (FacebookApiException ex)
             {
