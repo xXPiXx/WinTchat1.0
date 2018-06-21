@@ -35,13 +35,14 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.pbFbPicture)).BeginInit();
             this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // pbFbPicture
             // 
             this.pbFbPicture.Cursor = System.Windows.Forms.Cursors.Default;
             this.pbFbPicture.InitialImage = null;
-            this.pbFbPicture.Location = new System.Drawing.Point(21, 501);
+            this.pbFbPicture.Location = new System.Drawing.Point(19, 17);
             this.pbFbPicture.Name = "pbFbPicture";
             this.pbFbPicture.Size = new System.Drawing.Size(120, 120);
             this.pbFbPicture.TabIndex = 0;
@@ -60,6 +61,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.pbFbPicture);
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -94,12 +96,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1225, 654);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.pbFbPicture);
             this.Name = "Menu";
             this.Text = "Menu";
             this.Load += new System.EventHandler(this.Menu_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pbFbPicture)).EndInit();
             this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
