@@ -27,6 +27,7 @@ namespace WinTchat
         private void Menu_Load(object sender, EventArgs e)
         {
             GetUserProfilePicture();
+            RecuperationDonnees();
         }
 
         private void GetUserProfilePicture()
@@ -118,6 +119,69 @@ namespace WinTchat
                 (Flng), Convert.ToInt32(Fht), null, IntPtr.Zero); // j'en tire une miniature
             }
             else pb.Image = Image.FromFile(path); // sinon j'affiche l'image de base
+        }
+
+        private void RecuperationDonnees()
+        {
+            // avoid using XAsync methods as it is marked obsolete.
+            // use XAsync only for .net 3.5/SL4/WP7
+            // use XTaskAsync methods instead.
+
+            var fb = new FacebookClient(_accessToken);
+
+            // make sure to add the appropriate event handler
+            // before calling the async methods.
+            // GetCompleted     => GetAsync
+            // PostCompleted    => PostAsync
+            // DeleteCompleted  => DeleteAsync
+            fb.GetCompleted += (o, e) =>
+            {
+                // incase you support cancellation, make sure to check
+                // e.Cancelled property first even before checking (e.Error != null).
+                if (e.Cancelled)
+                {
+                    // for this example, we can ignore as we don't allow this
+                    // example to be cancelled.
+                }
+                else if (e.Error != null)
+                {
+                    // error occurred
+                    this.BeginInvoke(new MethodInvoker(
+                                                 () =>
+                                                 {
+                                                     MessageBox.Show(e.Error.Message);
+                                                 }));
+                }
+                else
+                {
+                    // the request was completed successfully
+
+                    // now we can either cast it to IDictionary<string, object> or IList<object>
+                    // depending on the type.
+                    // For this example, we know that it is IDictionary<string,object>.
+                    var result = (IDictionary<string, object>)e.GetResultData();
+
+                    var firstName = (string)result["first_name"];
+                    var lastName = (string)result["last_name"];
+
+                    // since this is an async callback, make sure to be on the right thread
+                    // when working with the UI.
+                    this.BeginInvoke(new MethodInvoker(
+                                         () =>
+                                         {
+                                             lbl_nomPrenom.Text = "First Name: " + firstName;
+                                         }));
+                }
+            };
+
+            // additional parameters can be passed and 
+            // must be assignable from IDictionary<string, object> or anonymous object
+            var parameters = new Dictionary<string, object>();
+            parameters["fields"] = "first_name,last_name";
+
+            fb.GetAsync("me", parameters);
+            // or
+            //fb.GetAsync("me", new { fields = new[] { "first_name", "last_name" } });
         }
     }
 }

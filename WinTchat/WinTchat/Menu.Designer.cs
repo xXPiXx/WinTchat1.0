@@ -33,6 +33,7 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.lbl_nomPrenom = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbFbPicture)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -61,6 +62,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.lbl_nomPrenom);
             this.tabPage1.Controls.Add(this.pbFbPicture);
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
@@ -90,6 +92,15 @@
             this.tabPage3.Text = "Fils de discussion";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // lbl_nomPrenom
+            // 
+            this.lbl_nomPrenom.AutoSize = true;
+            this.lbl_nomPrenom.Location = new System.Drawing.Point(198, 49);
+            this.lbl_nomPrenom.Name = "lbl_nomPrenom";
+            this.lbl_nomPrenom.Size = new System.Drawing.Size(51, 20);
+            this.lbl_nomPrenom.TabIndex = 1;
+            this.lbl_nomPrenom.Text = "label1";
+            // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -102,6 +113,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbFbPicture)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -113,5 +125,6 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Label lbl_nomPrenom;
     }
 }
