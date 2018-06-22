@@ -71,6 +71,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConnexionWinTchat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConnexionWinTchat.Designer.cs">
+      <DependentUpon>ConnexionWinTchat.cs</DependentUpon>
+    </Compile>
     <Compile Include="FbLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,6 +97,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ConnexionWinTchat.resx">
+      <DependentUpon>ConnexionWinTchat.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FbLogin.resx">
       <DependentUpon>FbLogin.cs</DependentUpon>
     </EmbeddedResource>
