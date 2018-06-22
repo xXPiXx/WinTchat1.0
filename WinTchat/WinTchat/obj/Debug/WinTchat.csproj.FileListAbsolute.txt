@@ -77,3 +77,4 @@ C:\Users\pbrecko\Documents\EPSI\NoSQL\TP\FbWinforms\WinTchat\WinTchat\obj\Debug\
 C:\Users\pbrecko\Documents\EPSI\NoSQL\TP\FbWinforms\WinTchat\WinTchat\obj\Debug\WinTchat.csproj.CopyComplete
 C:\Users\pbrecko\Documents\EPSI\NoSQL\TP\FbWinforms\WinTchat\WinTchat\obj\Debug\WinTchat.exe
 C:\Users\pbrecko\Documents\EPSI\NoSQL\TP\FbWinforms\WinTchat\WinTchat\obj\Debug\WinTchat.pdb
+C:\Users\pbrecko\Documents\EPSI\NoSQL\TP\FbWinforms\WinTchat\WinTchat\obj\Debug\WinTchat.Connexion_WinTchat.resources

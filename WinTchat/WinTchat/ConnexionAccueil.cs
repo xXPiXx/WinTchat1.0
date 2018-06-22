@@ -35,7 +35,8 @@ namespace WinTchat
 
         private void btnCoCompte_Click(object sender, EventArgs e)
         {
-
+            var CoCompte = new Connexion_WinTchat();
+            CoCompte.ShowDialog();
         }
 
         private void btnCoFb_Click(object sender, EventArgs e)
