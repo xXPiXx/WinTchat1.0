@@ -28,8 +28,6 @@ namespace WinTchat
             var BsonAuth_Users = dbWintchat.GetCollection<BsonDocument>("Auth_Users");
 
             var ListAuth_Users = BsonAuth_Users.Find(_ => true).ToList();
-
-            //MessageBox.Show(ListAuth_Users[0][3].ToString());
         }
     }
 }
