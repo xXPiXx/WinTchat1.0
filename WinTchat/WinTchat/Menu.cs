@@ -26,8 +26,15 @@ namespace WinTchat
 
         private void Menu_Load(object sender, EventArgs e)
         {
-            GetUserProfilePicture();
-            RecuperationDonnees();
+            if (_accessToken.Equals("0"))
+            {
+
+            }
+            else
+            {
+                GetUserProfilePicture();
+                RecuperationDonnees();
+            }
         }
 
         private void GetUserProfilePicture()

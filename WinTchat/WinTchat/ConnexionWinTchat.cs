@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MongoDB.Driver;
 using MongoDB.Bson;
+using System.Security.Cryptography;
 
 namespace WinTchat
 {
@@ -21,6 +22,29 @@ namespace WinTchat
 
         private void Connexion_WinTchat_Load(object sender, EventArgs e)
         {
+            
+        }
+
+        static string ComputeSha256Hash(string rawData)
+        {
+            // Create a SHA256   
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                // ComputeHash - returns byte array  
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+                // Convert byte array to a string   
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
+        }
+
+        private void btn_connexion_Click(object sender, EventArgs e)
+        {
             var connectionString = "mongodb://109.0.171.86:33333";
             var client = new MongoClient(connectionString);
 
@@ -28,6 +52,28 @@ namespace WinTchat
             var BsonAuth_Users = dbWintchat.GetCollection<BsonDocument>("Auth_Users");
 
             var ListAuth_Users = BsonAuth_Users.Find(_ => true).ToList();
+
+            for (int i = 0; i < ListAuth_Users.Count; i++)
+            {
+                if (tb_email.Text.Equals(ListAuth_Users[i][0]))
+                {
+                    if (ComputeSha256Hash(tb_mdp.Text).Equals(ListAuth_Users[i][1]))
+                    {
+                        MessageBox.Show("Connexion réussie");
+                        Menu m = new Menu("0");
+                        m.Show();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Aucun compte ne correspond à cette adresse Email");
+                }
+            }
+        }
+
+        private void btn_inscription_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
