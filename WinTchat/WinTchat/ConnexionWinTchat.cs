@@ -45,35 +45,41 @@ namespace WinTchat
 
         private void btn_connexion_Click(object sender, EventArgs e)
         {
-            var connectionString = "mongodb://109.0.171.86:33333";
-            var client = new MongoClient(connectionString);
-
-            IMongoDatabase dbWintchat = client.GetDatabase("Wintchat");
-            var BsonAuth_Users = dbWintchat.GetCollection<BsonDocument>("Auth_Users");
-
-            var ListAuth_Users = BsonAuth_Users.Find(_ => true).ToList();
-
-            for (int i = 0; i < ListAuth_Users.Count; i++)
+            try
             {
-                if (tb_email.Text.Equals(ListAuth_Users[i][0]))
+                var connectionString = "mongodb://109.0.171.86:33333";
+                var client = new MongoClient(connectionString);
+
+                IMongoDatabase dbWintchat = client.GetDatabase("Wintchat");
+                var BsonAuth_Users = dbWintchat.GetCollection<BsonDocument>("Auth_Users");
+
+                var ListAuth_Users = BsonAuth_Users.Find(_ => true).ToList();
+
+                for (int i = 0; i < ListAuth_Users.Count; i++)
                 {
-                    if (ComputeSha256Hash(tb_mdp.Text).Equals(ListAuth_Users[i][1]))
+                    if (tb_email.Text.Equals(ListAuth_Users[i][7]) || tb_email.Text.Equals(ListAuth_Users[i][0]))
                     {
-                        MessageBox.Show("Connexion réussie");
-                        Menu m = new Menu("0");
-                        m.Show();
+                        if (ComputeSha256Hash(tb_mdp.Text).Equals(ListAuth_Users[i][1]))
+                        {
+                            MessageBox.Show("Connexion réussie");
+                            Menu m = new Menu("0");
+                            m.Show();
+                        }
                     }
+                    else
+                        MessageBox.Show("Aucun compte ne correspond à cette adresse Email");
                 }
-                else
-                {
-                    MessageBox.Show("Aucun compte ne correspond à cette adresse Email");
-                }
+            }
+            catch
+            {
+                MessageBox.Show("Le serveur WinTchat est actuellement injoignable");
             }
         }
 
         private void btn_inscription_Click(object sender, EventArgs e)
         {
-
+            InscriptionWinTchat i = new InscriptionWinTchat();
+            i.Show();
         }
     }
 }

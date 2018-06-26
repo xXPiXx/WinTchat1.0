@@ -39,11 +39,11 @@
             // lbl_email
             // 
             this.lbl_email.AutoSize = true;
-            this.lbl_email.Location = new System.Drawing.Point(115, 46);
+            this.lbl_email.Location = new System.Drawing.Point(49, 46);
             this.lbl_email.Name = "lbl_email";
-            this.lbl_email.Size = new System.Drawing.Size(56, 20);
+            this.lbl_email.Size = new System.Drawing.Size(122, 20);
             this.lbl_email.TabIndex = 0;
-            this.lbl_email.Text = "Email :";
+            this.lbl_email.Text = "Email / Pseudo :";
             // 
             // lbl_mdp
             // 
@@ -65,6 +65,7 @@
             // 
             this.tb_mdp.Location = new System.Drawing.Point(193, 121);
             this.tb_mdp.Name = "tb_mdp";
+            this.tb_mdp.PasswordChar = '●';
             this.tb_mdp.Size = new System.Drawing.Size(350, 26);
             this.tb_mdp.TabIndex = 5;
             this.tb_mdp.UseSystemPasswordChar = true;

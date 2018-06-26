@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Facebook;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace WinTchat
 {
@@ -35,12 +37,14 @@ namespace WinTchat
 
         private void btnCoCompte_Click(object sender, EventArgs e)
         {
+            Hide();
             var CoCompte = new Connexion_WinTchat();
             CoCompte.ShowDialog();
         }
 
         private void btnCoFb_Click(object sender, EventArgs e)
         {
+            Hide();
             // open the Facebook Login Dialog and ask for user permissions.
             var fbLoginDlg = new FbLogin(AppId, ExtendedPermissions);
             fbLoginDlg.ShowDialog();
@@ -53,7 +57,36 @@ namespace WinTchat
 
         private void btnCoAnonyme_Click(object sender, EventArgs e)
         {
+            Hide();
+            try
+            {
+                var connectionString = "mongodb://109.0.171.86:33333";
+                var client = new MongoClient(connectionString);
 
+                IMongoDatabase dbWintchat = client.GetDatabase("Wintchat");
+                var BsonAuth_Users = dbWintchat.GetCollection<BsonDocument>("Auth_Users");
+
+                BsonDocument new_user_ano = new BsonDocument
+                {
+                    { "pseudo", "anonyme"+ObjectId.GenerateNewId() },
+                    { "password", "123456Ano" },
+                    { "full_name", "John Doe" },
+                    { "birth_date", "null" },
+                    { "pays", "Anonyme" },
+                    { "Langue", "Anonyme" },
+                    { "facebookid", "null" },
+                    { "email", "Anonyme" },
+                    { "join_date", "Anonyme" },
+                    { "is_connected", "true" },
+                };
+                BsonAuth_Users.InsertOneAsync(new_user_ano);
+            }
+            catch
+            {
+                MessageBox.Show("Le serveur WinTchat est actuellement injoignable.");
+            }
+            Menu m = new Menu("0");
+            m.Show();
         }
 
         private void TakeLoggedInAction(FacebookOAuthResult facebookOAuthResult)
@@ -74,7 +107,7 @@ namespace WinTchat
                 // The user now has successfully granted permission to our app.
                 //var dlg = new InfoDialog(facebookOAuthResult.AccessToken);
                 //dlg.ShowDialog();
-                MessageBox.Show("Connexion établie");
+                //MessageBox.Show("Connexion établie");
                 var dlg = new Menu(facebookOAuthResult.AccessToken);
                 dlg.ShowDialog();
             }

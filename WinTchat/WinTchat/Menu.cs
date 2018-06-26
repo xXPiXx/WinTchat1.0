@@ -31,9 +31,9 @@ namespace WinTchat
 
             }
             else
-            {
-                GetUserProfilePicture();
-                RecuperationDonnees();
+            { 
+            GetUserProfilePicture();
+            RecuperationDonnees();
             }
         }
 
@@ -73,7 +73,6 @@ namespace WinTchat
                     System.IO.Directory.CreateDirectory(startupPath + "\\tmp");
 
                 wc.DownloadFile(new Uri(profilePictureUrl), startupPath + "\\tmp\\profilePicture.jpg");
-                //pbFbPicture.Image = Image.FromFile("C:\\Users\\pbrecko\\Documents\\EPSI\\NoSQL\\TP\\profilePicture.jpg");
                 ResizeImage(startupPath + "\\tmp\\profilePicture.jpg", pbFbPicture);
             }
             catch (FacebookApiException ex)
