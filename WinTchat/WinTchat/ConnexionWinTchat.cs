@@ -81,5 +81,10 @@ namespace WinTchat
             InscriptionWinTchat i = new InscriptionWinTchat();
             i.Show();
         }
+
+        private void Connexion_WinTchat_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

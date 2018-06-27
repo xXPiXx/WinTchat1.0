@@ -103,6 +103,7 @@
             this.Controls.Add(this.lbl_email);
             this.Name = "Connexion_WinTchat";
             this.Text = "Connexion WinTchat";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Connexion_WinTchat_FormClosing);
             this.Load += new System.EventHandler(this.Connexion_WinTchat_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

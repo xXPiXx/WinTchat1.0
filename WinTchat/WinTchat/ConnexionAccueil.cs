@@ -24,7 +24,7 @@ namespace WinTchat
         /// For extensive list of available extended permissions refer to 
         /// https://developers.facebook.com/docs/reference/api/permissions/
         /// </remarks>
-        private const string ExtendedPermissions = "public_profile";
+        private const string ExtendedPermissions = "public_profile,email,user_birthday";
         public ConnexionAccueil()
         {
             InitializeComponent();
@@ -117,6 +117,11 @@ namespace WinTchat
                 // most likely the user clicked don't allow.
                 MessageBox.Show(facebookOAuthResult.ErrorDescription);
             }
+        }
+
+        private void ConnexionAccueil_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

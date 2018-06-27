@@ -32,8 +32,8 @@ namespace WinTchat
             }
             else
             { 
-            GetUserProfilePicture();
-            RecuperationDonnees();
+                GetUserProfilePicture();
+                RecuperationDonnees();
             }
         }
 
@@ -169,13 +169,18 @@ namespace WinTchat
 
                     var firstName = (string)result["first_name"];
                     var lastName = (string)result["last_name"];
+                    var email = (string)result["email"];
+                    //var ageRange = (string)result["age_range"];
+                    //var birthday = (string)result["user_birthday"];
 
                     // since this is an async callback, make sure to be on the right thread
                     // when working with the UI.
                     this.BeginInvoke(new MethodInvoker(
                                          () =>
                                          {
-                                             lbl_nomPrenom.Text = "First Name: " + firstName;
+                                             lbl_nom.Text = firstName + " " + lastName;
+                                             lbl_email.Text = email;                                             
+                                             //lbl_birthdate.Text = ageRange;
                                          }));
                 }
             };
@@ -183,11 +188,16 @@ namespace WinTchat
             // additional parameters can be passed and 
             // must be assignable from IDictionary<string, object> or anonymous object
             var parameters = new Dictionary<string, object>();
-            parameters["fields"] = "first_name,last_name";
+            parameters["fields"] = "first_name,last_name,email";
 
             fb.GetAsync("me", parameters);
             // or
             //fb.GetAsync("me", new { fields = new[] { "first_name", "last_name" } });
+        }
+
+        private void Menu_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

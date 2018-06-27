@@ -84,6 +84,7 @@
             this.Controls.Add(this.btnCoCompte);
             this.Name = "ConnexionAccueil";
             this.Text = "Connexion";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ConnexionAccueil_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

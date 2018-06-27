@@ -45,6 +45,8 @@
             this.cb_pays = new System.Windows.Forms.ComboBox();
             this.cb_langue = new System.Windows.Forms.ComboBox();
             this.btn_inscrire = new System.Windows.Forms.Button();
+            this.tb_email = new System.Windows.Forms.TextBox();
+            this.lbl_email = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lbl_pseudo
@@ -86,7 +88,7 @@
             // lbl_birthdate
             // 
             this.lbl_birthdate.AutoSize = true;
-            this.lbl_birthdate.Location = new System.Drawing.Point(62, 290);
+            this.lbl_birthdate.Location = new System.Drawing.Point(62, 344);
             this.lbl_birthdate.Name = "lbl_birthdate";
             this.lbl_birthdate.Size = new System.Drawing.Size(150, 20);
             this.lbl_birthdate.TabIndex = 4;
@@ -95,7 +97,7 @@
             // lbl_pays
             // 
             this.lbl_pays.AutoSize = true;
-            this.lbl_pays.Location = new System.Drawing.Point(161, 340);
+            this.lbl_pays.Location = new System.Drawing.Point(161, 394);
             this.lbl_pays.Name = "lbl_pays";
             this.lbl_pays.Size = new System.Drawing.Size(51, 20);
             this.lbl_pays.TabIndex = 5;
@@ -104,7 +106,7 @@
             // lbl_langue
             // 
             this.lbl_langue.AutoSize = true;
-            this.lbl_langue.Location = new System.Drawing.Point(141, 390);
+            this.lbl_langue.Location = new System.Drawing.Point(141, 444);
             this.lbl_langue.Name = "lbl_langue";
             this.lbl_langue.Size = new System.Drawing.Size(71, 20);
             this.lbl_langue.TabIndex = 6;
@@ -116,6 +118,7 @@
             this.tb_nom.Name = "tb_nom";
             this.tb_nom.Size = new System.Drawing.Size(356, 26);
             this.tb_nom.TabIndex = 7;
+            this.tb_nom.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_nom_KeyPress);
             // 
             // tb_prenom
             // 
@@ -160,30 +163,36 @@
             // 
             // dtp_naissance
             // 
-            this.dtp_naissance.Location = new System.Drawing.Point(228, 285);
+            this.dtp_naissance.Location = new System.Drawing.Point(228, 339);
             this.dtp_naissance.Name = "dtp_naissance";
             this.dtp_naissance.Size = new System.Drawing.Size(277, 26);
             this.dtp_naissance.TabIndex = 13;
             // 
             // cb_pays
             // 
+            this.cb_pays.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_pays.FormattingEnabled = true;
-            this.cb_pays.Location = new System.Drawing.Point(228, 337);
+            this.cb_pays.Items.AddRange(new object[] {
+            "France"});
+            this.cb_pays.Location = new System.Drawing.Point(228, 391);
             this.cb_pays.Name = "cb_pays";
             this.cb_pays.Size = new System.Drawing.Size(213, 28);
             this.cb_pays.TabIndex = 14;
             // 
             // cb_langue
             // 
+            this.cb_langue.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_langue.FormattingEnabled = true;
-            this.cb_langue.Location = new System.Drawing.Point(228, 387);
+            this.cb_langue.Items.AddRange(new object[] {
+            "Français"});
+            this.cb_langue.Location = new System.Drawing.Point(228, 441);
             this.cb_langue.Name = "cb_langue";
             this.cb_langue.Size = new System.Drawing.Size(213, 28);
             this.cb_langue.TabIndex = 15;
             // 
             // btn_inscrire
             // 
-            this.btn_inscrire.Location = new System.Drawing.Point(578, 427);
+            this.btn_inscrire.Location = new System.Drawing.Point(578, 481);
             this.btn_inscrire.Name = "btn_inscrire";
             this.btn_inscrire.Size = new System.Drawing.Size(210, 56);
             this.btn_inscrire.TabIndex = 16;
@@ -191,11 +200,31 @@
             this.btn_inscrire.UseVisualStyleBackColor = true;
             this.btn_inscrire.Click += new System.EventHandler(this.btn_inscrire_Click);
             // 
+            // tb_email
+            // 
+            this.tb_email.Location = new System.Drawing.Point(228, 287);
+            this.tb_email.Name = "tb_email";
+            this.tb_email.PasswordChar = '●';
+            this.tb_email.Size = new System.Drawing.Size(356, 26);
+            this.tb_email.TabIndex = 18;
+            this.tb_email.UseSystemPasswordChar = true;
+            // 
+            // lbl_email
+            // 
+            this.lbl_email.AutoSize = true;
+            this.lbl_email.Location = new System.Drawing.Point(156, 290);
+            this.lbl_email.Name = "lbl_email";
+            this.lbl_email.Size = new System.Drawing.Size(56, 20);
+            this.lbl_email.TabIndex = 17;
+            this.lbl_email.Text = "Email :";
+            // 
             // InscriptionWinTchat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 495);
+            this.ClientSize = new System.Drawing.Size(800, 553);
+            this.Controls.Add(this.tb_email);
+            this.Controls.Add(this.lbl_email);
             this.Controls.Add(this.btn_inscrire);
             this.Controls.Add(this.cb_langue);
             this.Controls.Add(this.cb_pays);
@@ -240,5 +269,7 @@
         private System.Windows.Forms.ComboBox cb_pays;
         private System.Windows.Forms.ComboBox cb_langue;
         private System.Windows.Forms.Button btn_inscrire;
+        private System.Windows.Forms.TextBox tb_email;
+        private System.Windows.Forms.Label lbl_email;
     }
 }
