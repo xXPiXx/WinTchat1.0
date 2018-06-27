@@ -118,6 +118,7 @@
             this.btn_deco.TabIndex = 2;
             this.btn_deco.Text = "Déconnexion";
             this.btn_deco.UseVisualStyleBackColor = true;
+            this.btn_deco.Click += new System.EventHandler(this.btn_deco_Click);
             // 
             // btn_modifProfil
             // 
@@ -127,6 +128,7 @@
             this.btn_modifProfil.TabIndex = 2;
             this.btn_modifProfil.Text = "Modifier mon profil";
             this.btn_modifProfil.UseVisualStyleBackColor = true;
+            this.btn_modifProfil.Click += new System.EventHandler(this.btn_modifProfil_Click);
             // 
             // lbl_pseudo
             // 

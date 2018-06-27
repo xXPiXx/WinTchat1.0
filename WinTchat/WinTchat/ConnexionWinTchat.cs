@@ -15,8 +15,10 @@ namespace WinTchat
 {
     public partial class Connexion_WinTchat : Form
     {
-        public Connexion_WinTchat()
+        ConnexionAccueil ca;
+        public Connexion_WinTchat(ConnexionAccueil _ca)
         {
+            ca = _ca;
             InitializeComponent();
         }
 
@@ -62,7 +64,7 @@ namespace WinTchat
                         if (ComputeSha256Hash(tb_mdp.Text).Equals(ListAuth_Users[i][1]))
                         {
                             MessageBox.Show("Connexion réussie");
-                            Menu m = new Menu("0");
+                            Menu m = new Menu("0", ca);
                             m.Show();
                         }
                     }

@@ -16,11 +16,13 @@ namespace WinTchat
     {
         private readonly TaskScheduler _ui;
         private readonly string _accessToken;
-        public Menu(string accessToken)
+        ConnexionAccueil ca;
+        bool deco = false;
+        public Menu(string accessToken, ConnexionAccueil _ca)
         {
             _accessToken = accessToken;
             _ui = TaskScheduler.FromCurrentSynchronizationContext();
-
+            ca = _ca;
             InitializeComponent();
         }
 
@@ -39,45 +41,52 @@ namespace WinTchat
 
         private void GetUserProfilePicture()
         {
-            // note: avoid using synchronous methods if possible as it will block the thread until the result is received
-
-            try
+            if (_accessToken.Equals("0"))
             {
-                var fb = new FacebookClient(_accessToken);
+                // note: avoid using synchronous methods if possible as it will block the thread until the result is received
 
-                // Note: the result can either me IDictionary<string,object> or IList<object>
-                // json objects with properties can be casted to IDictionary<string,object> or IDictionary<string,dynamic>
-                // json arrays can be casted to IList<object> or IList<dynamic>
+                try
+                {
+                    var fb = new FacebookClient(_accessToken);
 
-                // for this particular request we can guarantee that the result is
-                // always IDictionary<string,object>.
-                var result = (IDictionary<string, object>)fb.Get("me");
+                    // Note: the result can either me IDictionary<string,object> or IList<object>
+                    // json objects with properties can be casted to IDictionary<string,object> or IDictionary<string,dynamic>
+                    // json arrays can be casted to IList<object> or IList<dynamic>
 
-                // make sure to cast the object to appropriate type
-                var id = (string)result["id"];
+                    // for this particular request we can guarantee that the result is
+                    // always IDictionary<string,object>.
+                    var result = (IDictionary<string, object>)fb.Get("me");
 
-                // FacebookClient's Get/Post/Delete methods only supports JSON response results.
-                // For non json results, you will need to use different mechanism,
+                    // make sure to cast the object to appropriate type
+                    var id = (string)result["id"];
 
-                // here is an example for pictures.
-                // available picture types: square (50x50), small (50xvariable height), large (about 200x variable height) (all size in pixels)
-                // for more info visit http://developers.facebook.com/docs/reference/api
-                string profilePictureUrl = string.Format("https://graph.facebook.com/v3.0/{0}/picture", id);
+                    // FacebookClient's Get/Post/Delete methods only supports JSON response results.
+                    // For non json results, you will need to use different mechanism,
 
-                WebClient wc = new WebClient();
+                    // here is an example for pictures.
+                    // available picture types: square (50x50), small (50xvariable height), large (about 200x variable height) (all size in pixels)
+                    // for more info visit http://developers.facebook.com/docs/reference/api
+                    string profilePictureUrl = string.Format("https://graph.facebook.com/v3.0/{0}/picture", id);
 
-                string startupPath = Environment.CurrentDirectory;
-                bool exists = System.IO.Directory.Exists(startupPath + "\\tmp");
+                    WebClient wc = new WebClient();
 
-                if (!exists)
-                    System.IO.Directory.CreateDirectory(startupPath + "\\tmp");
+                    string startupPath = Environment.CurrentDirectory;
+                    bool exists = System.IO.Directory.Exists(startupPath + "\\tmp");
 
-                wc.DownloadFile(new Uri(profilePictureUrl), startupPath + "\\tmp\\profilePicture.jpg");
-                ResizeImage(startupPath + "\\tmp\\profilePicture.jpg", pbFbPicture);
+                    if (!exists)
+                        System.IO.Directory.CreateDirectory(startupPath + "\\tmp");
+
+                    wc.DownloadFile(new Uri(profilePictureUrl), startupPath + "\\tmp\\profilePicture.jpg");
+                    ResizeImage(startupPath + "\\tmp\\profilePicture.jpg", pbFbPicture);
+                }
+                catch (FacebookApiException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
-            catch (FacebookApiException ex)
+            else
             {
-                MessageBox.Show(ex.Message);
+
             }
         }
 
@@ -197,7 +206,20 @@ namespace WinTchat
 
         private void Menu_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Application.Exit();
+            if (deco = false)
+                Application.Exit();
+        }
+
+        private void btn_modifProfil_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_deco_Click(object sender, EventArgs e)
+        {
+            deco = true;
+            ca.Show();
+            this.Close();
         }
     }
 }

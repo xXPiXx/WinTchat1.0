@@ -38,13 +38,14 @@ namespace WinTchat
         private void btnCoCompte_Click(object sender, EventArgs e)
         {
             Hide();
-            var CoCompte = new Connexion_WinTchat();
+            var CoCompte = new Connexion_WinTchat(this);
             CoCompte.ShowDialog();
         }
 
         private void btnCoFb_Click(object sender, EventArgs e)
         {
             Hide();
+            ConnexionAccueil ca = this;
             // open the Facebook Login Dialog and ask for user permissions.
             var fbLoginDlg = new FbLogin(AppId, ExtendedPermissions);
             fbLoginDlg.ShowDialog();
@@ -85,7 +86,7 @@ namespace WinTchat
             {
                 MessageBox.Show("Le serveur WinTchat est actuellement injoignable.");
             }
-            Menu m = new Menu("0");
+            Menu m = new Menu("0", this);
             m.Show();
         }
 
@@ -105,10 +106,8 @@ namespace WinTchat
                 // since our respone_type in FacebookLoginDialog was token,
                 // we got the access_token
                 // The user now has successfully granted permission to our app.
-                //var dlg = new InfoDialog(facebookOAuthResult.AccessToken);
-                //dlg.ShowDialog();
-                //MessageBox.Show("Connexion établie");
-                var dlg = new Menu(facebookOAuthResult.AccessToken);
+                
+                var dlg = new Menu(facebookOAuthResult.AccessToken, this);
                 dlg.ShowDialog();
             }
             else

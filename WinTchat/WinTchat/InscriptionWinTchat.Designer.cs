@@ -126,6 +126,7 @@
             this.tb_prenom.Name = "tb_prenom";
             this.tb_prenom.Size = new System.Drawing.Size(356, 26);
             this.tb_prenom.TabIndex = 8;
+            this.tb_prenom.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_prenom_KeyPress);
             // 
             // tb_pseudo
             // 
@@ -133,6 +134,7 @@
             this.tb_pseudo.Name = "tb_pseudo";
             this.tb_pseudo.Size = new System.Drawing.Size(356, 26);
             this.tb_pseudo.TabIndex = 9;
+            this.tb_pseudo.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_pseudo_KeyPress);
             // 
             // tb_mdp
             // 
@@ -142,6 +144,7 @@
             this.tb_mdp.Size = new System.Drawing.Size(356, 26);
             this.tb_mdp.TabIndex = 10;
             this.tb_mdp.UseSystemPasswordChar = true;
+            this.tb_mdp.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_mdp_KeyPress);
             // 
             // tb_mdpConf
             // 
@@ -151,6 +154,7 @@
             this.tb_mdpConf.Size = new System.Drawing.Size(356, 26);
             this.tb_mdpConf.TabIndex = 12;
             this.tb_mdpConf.UseSystemPasswordChar = true;
+            this.tb_mdpConf.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_mdpConf_KeyPress);
             // 
             // lbl_mdpConf
             // 
@@ -208,6 +212,7 @@
             this.tb_email.Size = new System.Drawing.Size(356, 26);
             this.tb_email.TabIndex = 18;
             this.tb_email.UseSystemPasswordChar = true;
+            this.tb_email.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_email_KeyPress);
             // 
             // lbl_email
             // 

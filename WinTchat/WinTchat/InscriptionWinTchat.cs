@@ -78,5 +78,35 @@ namespace WinTchat
             if (e.KeyChar == ' ')
                 e.Handled = true;
         }
+
+        private void tb_prenom_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == ' ')
+                e.Handled = true;
+        }
+
+        private void tb_pseudo_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == ' ')
+                e.Handled = true;
+        }
+
+        private void tb_mdp_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == ' ')
+                e.Handled = true;
+        }
+
+        private void tb_mdpConf_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == ' ')
+                e.Handled = true;
+        }
+
+        private void tb_email_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == ' ')
+                e.Handled = true;
+        }
     }
 }
