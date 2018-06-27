@@ -81,13 +81,15 @@ namespace WinTchat
                     { "is_connected", "true" },
                 };
                 BsonAuth_Users.InsertOneAsync(new_user_ano);
+
+                Menu m = new Menu("0", this);
+                m.Show();
+
             }
             catch
             {
                 MessageBox.Show("Le serveur WinTchat est actuellement injoignable.");
             }
-            Menu m = new Menu("0", this);
-            m.Show();
         }
 
         private void TakeLoggedInAction(FacebookOAuthResult facebookOAuthResult)
