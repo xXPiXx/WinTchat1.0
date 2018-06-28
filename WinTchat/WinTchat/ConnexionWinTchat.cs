@@ -69,7 +69,6 @@ namespace WinTchat
                         if (ComputeSha256Hash(tb_mdp.Text).Equals(ListAuth_Users[i][2].ToString()))
                         {
                             user_match = true;
-
                         }
                     }
                     else
