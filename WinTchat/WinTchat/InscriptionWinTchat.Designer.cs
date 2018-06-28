@@ -208,10 +208,8 @@
             // 
             this.tb_email.Location = new System.Drawing.Point(228, 287);
             this.tb_email.Name = "tb_email";
-            this.tb_email.PasswordChar = '●';
             this.tb_email.Size = new System.Drawing.Size(356, 26);
             this.tb_email.TabIndex = 18;
-            this.tb_email.UseSystemPasswordChar = true;
             this.tb_email.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_email_KeyPress);
             // 
             // lbl_email

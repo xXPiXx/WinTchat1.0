@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using System.Security.Cryptography;
 
 namespace WinTchat
 {
@@ -50,7 +51,7 @@ namespace WinTchat
                     BsonDocument new_user_ano = new BsonDocument
                     {
                     { "pseudo", tb_pseudo.Text },
-                    { "password", tb_mdpConf.Text },
+                    { "password", ComputeSha256Hash(tb_mdpConf.Text) },
                     { "full_name", tb_prenom.Text + " " + tb_nom.Text },
                     { "birth_date", dtp_naissance.Text },
                     { "pays", cb_pays.Text },
@@ -87,7 +88,7 @@ namespace WinTchat
 
         private void tb_pseudo_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == ' ')
+            if (e.KeyChar == ' ' || e.KeyChar == '@')
                 e.Handled = true;
         }
 
@@ -107,6 +108,25 @@ namespace WinTchat
         {
             if (e.KeyChar == ' ')
                 e.Handled = true;
+        }
+
+        static string ComputeSha256Hash(string rawData)
+        {
+            // Create a SHA256   
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                // ComputeHash - returns byte array  
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+                // Convert byte array to a string   
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+
+                return builder.ToString();
+            }
         }
     }
 }

@@ -17,6 +17,7 @@ namespace WinTchat
     public partial class Connexion_WinTchat : Form
     {
         ConnexionAccueil ca;
+        bool closeApplication = true;
         public Connexion_WinTchat(ConnexionAccueil _ca)
         {
             ca = _ca;
@@ -82,12 +83,13 @@ namespace WinTchat
                 if(user_match == true)
                 {
                     MessageBox.Show("Connexion réussie");
-                    Menu m = new Menu("0", ca);
+                    Menu m = new Menu("0", ca, tb_email.Text, dbWintchat);
+                    closeApplication = false;
+                    Close();
                     m.Show();
-                } else
-                {
-                    MessageBox.Show("Aucun compte ne correspond à cette adresse Email");
                 }
+                else
+                    MessageBox.Show("Aucun compte ne correspond à cette adresse Email ou ce pseudo");
                 
             }
             catch
@@ -104,7 +106,8 @@ namespace WinTchat
 
         private void Connexion_WinTchat_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Application.Exit();
+            if (closeApplication)
+                Application.Exit();
         }
     }
 }

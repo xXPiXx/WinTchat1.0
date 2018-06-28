@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Facebook;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace WinTchat
 {
@@ -18,19 +20,31 @@ namespace WinTchat
         private readonly string _accessToken;
         ConnexionAccueil ca;
         bool deco = false;
-        public Menu(string accessToken, ConnexionAccueil _ca)
+        string pseudo = "";
+        IMongoDatabase dbWinTchat;
+        public Menu(string accessToken, ConnexionAccueil _ca, string _pseudo, IMongoDatabase _db)
         {
             _accessToken = accessToken;
             _ui = TaskScheduler.FromCurrentSynchronizationContext();
             ca = _ca;
+            pseudo = _pseudo;
             InitializeComponent();
+            dbWinTchat = _db;
         }
 
         private void Menu_Load(object sender, EventArgs e)
         {
             if (_accessToken.Equals("0"))
             {
+                var BsonAuth_Users = dbWinTchat.GetCollection<BsonDocument>("Auth_Users");
+                var builder = Builders<BsonDocument>.Filter;
+                var filt = builder.Eq("pseudo", pseudo) | builder.Eq("email", pseudo);
+                var list = BsonAuth_Users.Find(filt).ToList();
 
+                lbl_pseudo.Text = list[0][1].ToString();
+                lbl_nom.Text = list[0][3].ToString();
+                lbl_email.Text = list[0][8].ToString();
+                lbl_birthdate.Text = list[0][4].ToString();
             }
             else
             { 
@@ -41,7 +55,7 @@ namespace WinTchat
 
         private void GetUserProfilePicture()
         {
-            if (_accessToken.Equals("0"))
+            if (!_accessToken.Equals("0"))
             {
                 // note: avoid using synchronous methods if possible as it will block the thread until the result is received
 
@@ -189,8 +203,30 @@ namespace WinTchat
                                          {
                                              lbl_nom.Text = firstName + " " + lastName;
                                              lbl_email.Text = email;                                             
-                                             //lbl_birthdate.Text = ageRange;
                                          }));
+
+                    var BsonAuth_Users = dbWinTchat.GetCollection<BsonDocument>("Auth_Users");
+                    var builder = Builders<BsonDocument>.Filter;
+                    var filt = builder.Eq("email", email);
+                    var list = BsonAuth_Users.Find(filt).ToList();
+
+                    if (list.Count == 0)
+                    {
+                        BsonDocument new_user_ano = new BsonDocument
+                        {
+                        { "pseudo", firstName[0] + lastName },
+                        { "password", null },
+                        { "full_name", firstName + " " + lastName },
+                        { "birth_date", null },
+                        { "pays", null },
+                        { "Langue", null },
+                        { "facebookid", _accessToken },
+                        { "email", email },
+                        { "join_date", DateTime.Now.ToString() },
+                        { "is_connected", "true" },
+                        };
+                        BsonAuth_Users.InsertOneAsync(new_user_ano);
+                    }
                 }
             };
 
@@ -206,7 +242,7 @@ namespace WinTchat
 
         private void Menu_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (deco = false)
+            if (!deco)
                 Application.Exit();
         }
 
@@ -219,7 +255,7 @@ namespace WinTchat
         {
             deco = true;
             ca.Show();
-            this.Close();
+            Close();
         }
     }
 }

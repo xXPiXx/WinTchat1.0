@@ -15,6 +15,7 @@ namespace WinTchat
 {
     public partial class ConnexionAccueil : Form
     {
+        IMongoDatabase dbWintchat;
         private const string AppId = "145842399616974";
 
         /// <summary>
@@ -64,12 +65,13 @@ namespace WinTchat
                 var connectionString = "mongodb://109.0.171.86:33333";
                 var client = new MongoClient(connectionString);
 
-                IMongoDatabase dbWintchat = client.GetDatabase("Wintchat");
+                dbWintchat = client.GetDatabase("Wintchat");
                 var BsonAuth_Users = dbWintchat.GetCollection<BsonDocument>("Auth_Users");
+                string pseudo = "anonyme" + ObjectId.GenerateNewId();
 
                 BsonDocument new_user_ano = new BsonDocument
                 {
-                    { "pseudo", "anonyme"+ObjectId.GenerateNewId() },
+                    { "pseudo", pseudo },
                     { "password", "123456Ano" },
                     { "full_name", "John Doe" },
                     { "birth_date", "null" },
@@ -82,7 +84,7 @@ namespace WinTchat
                 };
                 BsonAuth_Users.InsertOneAsync(new_user_ano);
 
-                Menu m = new Menu("0", this);
+                Menu m = new Menu("0", this, pseudo, dbWintchat);
                 m.Show();
 
             }
@@ -99,7 +101,7 @@ namespace WinTchat
                 // the user closed the FacebookLoginDialog, so do nothing.
                 MessageBox.Show("Cancelled!");
                 return;
-            }
+            } 
 
             // Even though facebookOAuthResult is not null, it could had been an 
             // OAuth 2.0 error, so make sure to check IsSuccess property always.
@@ -108,8 +110,8 @@ namespace WinTchat
                 // since our respone_type in FacebookLoginDialog was token,
                 // we got the access_token
                 // The user now has successfully granted permission to our app.
-                
-                var dlg = new Menu(facebookOAuthResult.AccessToken, this);
+
+                var dlg = new Menu(facebookOAuthResult.AccessToken, this, "" ,dbWintchat);
                 dlg.ShowDialog();
             }
             else
