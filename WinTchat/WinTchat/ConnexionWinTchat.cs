@@ -25,19 +25,14 @@ namespace WinTchat
         }
 
         private void Connexion_WinTchat_Load(object sender, EventArgs e)
-        {
-            
-        }
+        {}
 
         static string ComputeSha256Hash(string rawData)
-        {
-            // Create a SHA256   
+        {           
             using (SHA256 sha256Hash = SHA256.Create())
-            {
-                // ComputeHash - returns byte array  
+            {                
                 byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
-
-                // Convert byte array to a string   
+                            
                 StringBuilder builder = new StringBuilder();
                 for (int i = 0; i < bytes.Length; i++)
                 {
@@ -78,7 +73,6 @@ namespace WinTchat
                         Debug.WriteLine("User for loop : " + ListAuth_Users[i][8]);
                         Debug.WriteLine("Pass requested : " + ComputeSha256Hash(tb_mdp.Text));
                         Debug.WriteLine("Pass for loop : " + ListAuth_Users[i][2]);
-
                 }
                 if(user_match == true)
                 {
@@ -89,8 +83,7 @@ namespace WinTchat
                     m.Show();
                 }
                 else
-                    MessageBox.Show("Aucun compte ne correspond à cette adresse Email ou ce pseudo");
-                
+                    MessageBox.Show("Aucun compte ne correspond à cette adresse Email ou ce pseudo");                
             }
             catch
             {

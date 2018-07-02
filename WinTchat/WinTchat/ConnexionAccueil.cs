@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Facebook;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using System.Security.Cryptography;
 
 namespace WinTchat
 {
@@ -17,14 +18,9 @@ namespace WinTchat
     {
         IMongoDatabase dbWintchat;
         private const string AppId = "145842399616974";
-
-        /// <summary>
-        /// Extended permissions is a comma separated list of permissions to ask the user.
-        /// </summary>
-        /// <remarks>
-        /// For extensive list of available extended permissions refer to 
+        
         /// https://developers.facebook.com/docs/reference/api/permissions/
-        /// </remarks>
+       
         private const string ExtendedPermissions = "public_profile,email,user_birthday";
         public ConnexionAccueil()
         {
@@ -47,13 +43,10 @@ namespace WinTchat
         {
             Hide();
             ConnexionAccueil ca = this;
-            // open the Facebook Login Dialog and ask for user permissions.
+            
             var fbLoginDlg = new FbLogin(AppId, ExtendedPermissions);
             fbLoginDlg.ShowDialog();
-
-            // The user has taken action, either allowed/denied or cancelled the authorization,
-            // which can be known by looking at the dialogs FacebookOAuthResult property.
-            // Depending on the result take appropriate actions.
+           
             TakeLoggedInAction(fbLoginDlg.FacebookOAuthResult);
         }
 
@@ -72,7 +65,7 @@ namespace WinTchat
                 BsonDocument new_user_ano = new BsonDocument
                 {
                     { "pseudo", pseudo },
-                    { "password", "123456Ano" },
+                    { "password", ComputeSha256Hash("123456Ano") },
                     { "full_name", "John Doe" },
                     { "birth_date", "null" },
                     { "pays", "Anonyme" },
@@ -86,7 +79,6 @@ namespace WinTchat
 
                 Menu m = new Menu("0", this, pseudo, dbWintchat);
                 m.Show();
-
             }
             catch
             {
@@ -97,34 +89,39 @@ namespace WinTchat
         private void TakeLoggedInAction(FacebookOAuthResult facebookOAuthResult)
         {
             if (facebookOAuthResult == null)
-            {
-                // the user closed the FacebookLoginDialog, so do nothing.
+            {                
                 MessageBox.Show("Cancelled!");
                 return;
-            } 
-
-            // Even though facebookOAuthResult is not null, it could had been an 
-            // OAuth 2.0 error, so make sure to check IsSuccess property always.
+            }
+           
             if (facebookOAuthResult.IsSuccess)
-            {
-                // since our respone_type in FacebookLoginDialog was token,
-                // we got the access_token
-                // The user now has successfully granted permission to our app.
-
+            {                
                 var dlg = new Menu(facebookOAuthResult.AccessToken, this, "" ,dbWintchat);
                 dlg.ShowDialog();
             }
-            else
-            {
-                // for some reason we failed to get the access token.
-                // most likely the user clicked don't allow.
-                MessageBox.Show(facebookOAuthResult.ErrorDescription);
-            }
+            else                     
+                MessageBox.Show(facebookOAuthResult.ErrorDescription);            
         }
 
         private void ConnexionAccueil_FormClosing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();
+        }
+
+        static string ComputeSha256Hash(string rawData)
+        {           
+            using (SHA256 sha256Hash = SHA256.Create())
+            {                
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+ 
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+
+                return builder.ToString();
+            }
         }
     }
 }

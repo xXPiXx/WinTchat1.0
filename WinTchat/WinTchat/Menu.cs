@@ -28,8 +28,8 @@ namespace WinTchat
             _ui = TaskScheduler.FromCurrentSynchronizationContext();
             ca = _ca;
             pseudo = _pseudo;
-            InitializeComponent();
             dbWinTchat = _db;
+            InitializeComponent();
         }
 
         private void Menu_Load(object sender, EventArgs e)
@@ -56,37 +56,19 @@ namespace WinTchat
         private void GetUserProfilePicture()
         {
             if (!_accessToken.Equals("0"))
-            {
-                // note: avoid using synchronous methods if possible as it will block the thread until the result is received
-
+            {               
                 try
                 {
-                    var fb = new FacebookClient(_accessToken);
-
-                    // Note: the result can either me IDictionary<string,object> or IList<object>
-                    // json objects with properties can be casted to IDictionary<string,object> or IDictionary<string,dynamic>
-                    // json arrays can be casted to IList<object> or IList<dynamic>
-
-                    // for this particular request we can guarantee that the result is
-                    // always IDictionary<string,object>.
+                    var fb = new FacebookClient(_accessToken);                    
                     var result = (IDictionary<string, object>)fb.Get("me");
-
-                    // make sure to cast the object to appropriate type
                     var id = (string)result["id"];
-
-                    // FacebookClient's Get/Post/Delete methods only supports JSON response results.
-                    // For non json results, you will need to use different mechanism,
-
-                    // here is an example for pictures.
-                    // available picture types: square (50x50), small (50xvariable height), large (about 200x variable height) (all size in pixels)
-                    // for more info visit http://developers.facebook.com/docs/reference/api
+                                        
                     string profilePictureUrl = string.Format("https://graph.facebook.com/v3.0/{0}/picture", id);
-
-                    WebClient wc = new WebClient();
-
                     string startupPath = Environment.CurrentDirectory;
                     bool exists = System.IO.Directory.Exists(startupPath + "\\tmp");
 
+                    WebClient wc = new WebClient();
+                    
                     if (!exists)
                         System.IO.Directory.CreateDirectory(startupPath + "\\tmp");
 
@@ -100,81 +82,65 @@ namespace WinTchat
             }
             else
             {
+                if (!System.IO.Directory.Exists(Environment.CurrentDirectory + "\\tmp"))
+                    System.IO.Directory.CreateDirectory(Environment.CurrentDirectory + "\\tmp");
+                else
+                {
 
+                }
             }
         }
 
         private void ResizeImage(string path, PictureBox pb)
-        {
-            // réglages des valeurs servant au calcul
-            int Lmax = pb.Width;
-            // IMG est le nom de ma pictureBox
+        {            
+            int Lmax = pb.Width;            
             int Hmax = pb.Height;
 
             Image i = Image.FromFile(path);
-            // objet image à partir de l'image choisie
-            double ratio = (double)Lmax / Hmax;
-            // ratio de base à obtenir pour rentrer correctement dans la picturebox
-            double ratioImage = (double)i.Width / i.Height;
-            // ratio de l'image d'origine
-            double Flng = i.Width;
-            // largeur de l'image d'origine
+           
+            double ratio = (double)Lmax / Hmax;            
+            double ratioImage = (double)i.Width / i.Height;            
+            double Flng = i.Width;            
             double Fht = i.Height;
-            // hauteur de l'image d'origine
-            if (Flng > Lmax || Fht > Hmax)
-            // si l'image est plus grande d'une quelconque longueur
+           
+            if (Flng > Lmax || Fht > Hmax)           
             {
-                if (Flng > Lmax) // si la longueur est plus longue
+                if (Flng > Lmax) 
                 {
-                    if (1 > ratioImage) // et si la largueur est plus longue
+                    if (1 > ratioImage) 
                     {
-                        Fht = Hmax; // la hauteur prend la hauteur maximale
-                        if (Flng > i.Height) Flng = Fht / ratioImage; // calcul de la longueur 
-                        else Flng = Fht * ratioImage; // calcul de la longueur (bis)
+                        Fht = Hmax;
+                        if (Flng > i.Height) Flng = Fht / ratioImage; 
+                        else Flng = Fht * ratioImage; 
                     }
-                    else // seule la largeur est plus longue
+                    else 
                     {
-                        Flng = Lmax; // la largeur prend la largeur maximale
-                        if (Fht > i.Width) Fht = Flng / ratioImage; // calcul de la hauteur
+                        Flng = Lmax;
+                        if (Fht > i.Width) Fht = Flng / ratioImage; 
                         else Fht = Flng / ratioImage;
                     }
                 }
-                else // seule la largeur est plus longue
+                else 
                 {
                     Fht = Hmax;
                     Flng = Fht * ratioImage;
                 }
                 pb.Image = Image.FromFile(path).GetThumbnailImage(Convert.ToInt32
-                (Flng), Convert.ToInt32(Fht), null, IntPtr.Zero); // j'en tire une miniature
+                (Flng), Convert.ToInt32(Fht), null, IntPtr.Zero); 
             }
-            else pb.Image = Image.FromFile(path); // sinon j'affiche l'image de base
+            else pb.Image = Image.FromFile(path); 
         }
 
         private void RecuperationDonnees()
         {
-            // avoid using XAsync methods as it is marked obsolete.
-            // use XAsync only for .net 3.5/SL4/WP7
-            // use XTaskAsync methods instead.
-
             var fb = new FacebookClient(_accessToken);
-
-            // make sure to add the appropriate event handler
-            // before calling the async methods.
-            // GetCompleted     => GetAsync
-            // PostCompleted    => PostAsync
-            // DeleteCompleted  => DeleteAsync
+                        
             fb.GetCompleted += (o, e) =>
-            {
-                // incase you support cancellation, make sure to check
-                // e.Cancelled property first even before checking (e.Error != null).
+            {                
                 if (e.Cancelled)
-                {
-                    // for this example, we can ignore as we don't allow this
-                    // example to be cancelled.
-                }
+                {}
                 else if (e.Error != null)
-                {
-                    // error occurred
+                {                   
                     this.BeginInvoke(new MethodInvoker(
                                                  () =>
                                                  {
@@ -182,22 +148,12 @@ namespace WinTchat
                                                  }));
                 }
                 else
-                {
-                    // the request was completed successfully
-
-                    // now we can either cast it to IDictionary<string, object> or IList<object>
-                    // depending on the type.
-                    // For this example, we know that it is IDictionary<string,object>.
+                {                   
                     var result = (IDictionary<string, object>)e.GetResultData();
-
                     var firstName = (string)result["first_name"];
                     var lastName = (string)result["last_name"];
                     var email = (string)result["email"];
-                    //var ageRange = (string)result["age_range"];
-                    //var birthday = (string)result["user_birthday"];
-
-                    // since this is an async callback, make sure to be on the right thread
-                    // when working with the UI.
+                  
                     this.BeginInvoke(new MethodInvoker(
                                          () =>
                                          {
@@ -205,7 +161,7 @@ namespace WinTchat
                                              lbl_email.Text = email;                                             
                                          }));
 
-                    var BsonAuth_Users = dbWinTchat.GetCollection<BsonDocument>("Auth_Users");
+                    /*var BsonAuth_Users = dbWinTchat.GetCollection<BsonDocument>("Auth_Users");
                     var builder = Builders<BsonDocument>.Filter;
                     var filt = builder.Eq("email", email);
                     var list = BsonAuth_Users.Find(filt).ToList();
@@ -226,18 +182,15 @@ namespace WinTchat
                         { "is_connected", "true" },
                         };
                         BsonAuth_Users.InsertOneAsync(new_user_ano);
-                    }
+                    }*/
                 }
             };
-
-            // additional parameters can be passed and 
-            // must be assignable from IDictionary<string, object> or anonymous object
+         
             var parameters = new Dictionary<string, object>();
             parameters["fields"] = "first_name,last_name,email";
 
             fb.GetAsync("me", parameters);
-            // or
-            //fb.GetAsync("me", new { fields = new[] { "first_name", "last_name" } });
+         
         }
 
         private void Menu_FormClosing(object sender, FormClosingEventArgs e)
@@ -256,6 +209,47 @@ namespace WinTchat
             deco = true;
             ca.Show();
             Close();
+        }
+
+        private void btn_envoyer_Click(object sender, EventArgs e)
+        {
+            /*var connectionString = "mongodb://109.0.171.86:33333";
+            var client = new MongoClient(connectionString);
+
+            IMongoDatabase dbWintchat = client.GetDatabase("Wintchat");
+            var BsonMots_interdits = dbWinTchat.GetCollection<BsonDocument>("MotsInterdits");
+            var ListMots_interdits = BsonMots_interdits.Find(_ => true).ToList();
+
+            for(int i = 0; i < ListMots_interdits.Count;i++)
+            {
+                for (int j = 0; j < ListMots_interdits.Count-1; j++)
+                {
+                    if (ListMots_interdits[j][1].ToString().Length < ListMots_interdits[j+1][1].ToString().Length)
+                    {
+                        var tampon = ListMots_interdits[j+1][1];
+                        ListMots_interdits[j+1][1] = ListMots_interdits[j][1];
+                        ListMots_interdits[j][1] = tampon;
+                    }
+                }
+            }
+
+            string test = tb_mssg.Text;
+            for (int i = 0; i < ListMots_interdits.Count; i++)
+            {
+                if (test.Contains(ListMots_interdits[i][1].ToString()))
+                {
+
+                    string remove = ListMots_interdits[i][1].ToString();
+
+                    int j = 0;
+                    j = test.IndexOf(remove);
+
+                    test = test.Remove(j, remove.Length);
+                    test = test.Insert(j, "****");
+
+                    lbl_rep.Text = test;
+                }
+            }*/
         }
     }
 }
