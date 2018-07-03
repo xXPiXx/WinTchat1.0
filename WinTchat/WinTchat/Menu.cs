@@ -257,6 +257,8 @@ namespace WinTchat
         {
             if (tabControl1.SelectedTab == tabControl1.TabPages["tabPage2"])//your specific tabname
             {
+                dataGridView1.DataSource = null;
+                dataGridView1.Rows.Clear();
                 var connectionString = "mongodb://109.0.171.86:33333";
                 var client = new MongoClient(connectionString);
                 IMongoDatabase dbWintchat = client.GetDatabase("Wintchat");
@@ -299,6 +301,69 @@ namespace WinTchat
                                 {
                                     state = "Déconnecté";
                                 }
+                                dataGridView1.Rows.Add(ListAuth_Users[j][1], ListAuth_Users[j][3], state);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
+            var connectionString = "mongodb://109.0.171.86:33333";
+            var client = new MongoClient(connectionString);
+            IMongoDatabase dbWintchat = client.GetDatabase("Wintchat");
+            var BsonFriends = dbWintchat.GetCollection<BsonDocument>("Friends");
+            var ListFriends = BsonFriends.Find(_ => true).ToList();
+            var BsonAuth_Users = dbWintchat.GetCollection<BsonDocument>("Auth_Users");
+            var ListAuth_Users = BsonAuth_Users.Find(_ => true).ToList();
+            for (int i = 0; i < ListFriends.Count; i++)
+            {
+                if (ListFriends[i][1] == pseudo)
+                {
+                    for (int j = 0; j < ListAuth_Users.Count; j++)
+                    {
+                        if (ListFriends[i][2] == ListAuth_Users[j][1])
+                        {
+                            var state = "";
+                            if (ListAuth_Users[j][10] == "True")
+                            {
+                                state = "En ligne";
+                            }
+                            else
+                            {
+                                state = "Déconnecté";
+                            }
+                            if (ListAuth_Users[j][1].ToString().StartsWith(textBox1.Text))
+                            {
+                                dataGridView1.Rows.Add(ListAuth_Users[j][1], ListAuth_Users[j][3], state);
+                            }
+                            
+                        }
+                    }
+
+
+                }
+                else if (ListFriends[i][2] == pseudo)
+                {
+                    for (int j = 0; j < ListAuth_Users.Count; j++)
+                    {
+                        if (ListFriends[i][1] == ListAuth_Users[j][1])
+                        {
+                            var state = "";
+                            if (ListAuth_Users[j][10] == "True")
+                            {
+                                state = "En ligne";
+                            }
+                            else
+                            {
+                                state = "Déconnecté";
+                            }
+                            if (ListAuth_Users[j][1].ToString().StartsWith(textBox1.Text))
+                            {
                                 dataGridView1.Rows.Add(ListAuth_Users[j][1], ListAuth_Users[j][3], state);
                             }
                         }
