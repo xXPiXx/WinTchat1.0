@@ -81,3 +81,4 @@ C:\Users\pbrecko\Documents\EPSI\NoSQL\TP\FbWinforms\WinTchat\WinTchat\obj\Debug\
 C:\Users\pbrecko\Documents\EPSI\NoSQL\TP\FbWinforms\WinTchat\WinTchat\obj\Debug\WinTchat.InscriptionWinTchat.resources
 C:\Users\Olivier\Desktop\EPSI\WorkAgile\WinTchat1.0\WinTchat\WinTchat\obj\Debug\WinTchat.Connexion_WinTchat.resources
 C:\Users\Olivier\Desktop\EPSI\WorkAgile\WinTchat1.0\WinTchat\WinTchat\obj\Debug\WinTchat.InscriptionWinTchat.resources
+C:\Users\Olivier\Desktop\EPSI\WorkAgile\WinTchat1.0\WinTchat\WinTchat\obj\Debug\WinTchat.AjouterAmi.resources

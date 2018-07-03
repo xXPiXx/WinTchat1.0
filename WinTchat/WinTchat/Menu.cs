@@ -371,5 +371,15 @@ namespace WinTchat
                 }
             }
         }
-    }
-}
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            AjouterAmi add_friend_form = new AjouterAmi(pseudo);
+            add_friend_form.Show();
+
+            
+            }
+        }
+        }
+
+
