@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using Facebook;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using System.Diagnostics;
 
 namespace WinTchat
 {
@@ -47,7 +48,7 @@ namespace WinTchat
                 lbl_birthdate.Text = list[0][4].ToString();
             }
             else
-            { 
+            {
                 GetUserProfilePicture();
                 RecuperationDonnees();
             }
@@ -56,19 +57,19 @@ namespace WinTchat
         private void GetUserProfilePicture()
         {
             if (!_accessToken.Equals("0"))
-            {               
+            {
                 try
                 {
-                    var fb = new FacebookClient(_accessToken);                    
+                    var fb = new FacebookClient(_accessToken);
                     var result = (IDictionary<string, object>)fb.Get("me");
                     var id = (string)result["id"];
-                                        
+
                     string profilePictureUrl = string.Format("https://graph.facebook.com/v3.0/{0}/picture", id);
                     string startupPath = Environment.CurrentDirectory;
                     bool exists = System.IO.Directory.Exists(startupPath + "\\tmp");
 
                     WebClient wc = new WebClient();
-                    
+
                     if (!exists)
                         System.IO.Directory.CreateDirectory(startupPath + "\\tmp");
 
@@ -92,55 +93,55 @@ namespace WinTchat
         }
 
         private void ResizeImage(string path, PictureBox pb)
-        {            
-            int Lmax = pb.Width;            
+        {
+            int Lmax = pb.Width;
             int Hmax = pb.Height;
 
             Image i = Image.FromFile(path);
-           
-            double ratio = (double)Lmax / Hmax;            
-            double ratioImage = (double)i.Width / i.Height;            
-            double Flng = i.Width;            
+
+            double ratio = (double)Lmax / Hmax;
+            double ratioImage = (double)i.Width / i.Height;
+            double Flng = i.Width;
             double Fht = i.Height;
-           
-            if (Flng > Lmax || Fht > Hmax)           
+
+            if (Flng > Lmax || Fht > Hmax)
             {
-                if (Flng > Lmax) 
+                if (Flng > Lmax)
                 {
-                    if (1 > ratioImage) 
+                    if (1 > ratioImage)
                     {
                         Fht = Hmax;
-                        if (Flng > i.Height) Flng = Fht / ratioImage; 
-                        else Flng = Fht * ratioImage; 
+                        if (Flng > i.Height) Flng = Fht / ratioImage;
+                        else Flng = Fht * ratioImage;
                     }
-                    else 
+                    else
                     {
                         Flng = Lmax;
-                        if (Fht > i.Width) Fht = Flng / ratioImage; 
+                        if (Fht > i.Width) Fht = Flng / ratioImage;
                         else Fht = Flng / ratioImage;
                     }
                 }
-                else 
+                else
                 {
                     Fht = Hmax;
                     Flng = Fht * ratioImage;
                 }
                 pb.Image = Image.FromFile(path).GetThumbnailImage(Convert.ToInt32
-                (Flng), Convert.ToInt32(Fht), null, IntPtr.Zero); 
+                (Flng), Convert.ToInt32(Fht), null, IntPtr.Zero);
             }
-            else pb.Image = Image.FromFile(path); 
+            else pb.Image = Image.FromFile(path);
         }
 
         private void RecuperationDonnees()
         {
             var fb = new FacebookClient(_accessToken);
-                        
+
             fb.GetCompleted += (o, e) =>
-            {                
+            {
                 if (e.Cancelled)
-                {}
+                { }
                 else if (e.Error != null)
-                {                   
+                {
                     this.BeginInvoke(new MethodInvoker(
                                                  () =>
                                                  {
@@ -148,17 +149,17 @@ namespace WinTchat
                                                  }));
                 }
                 else
-                {                   
+                {
                     var result = (IDictionary<string, object>)e.GetResultData();
                     var firstName = (string)result["first_name"];
                     var lastName = (string)result["last_name"];
                     var email = (string)result["email"];
-                  
+
                     this.BeginInvoke(new MethodInvoker(
                                          () =>
                                          {
                                              lbl_nom.Text = firstName + " " + lastName;
-                                             lbl_email.Text = email;                                             
+                                             lbl_email.Text = email;
                                          }));
 
                     /*var BsonAuth_Users = dbWinTchat.GetCollection<BsonDocument>("Auth_Users");
@@ -185,12 +186,12 @@ namespace WinTchat
                     }*/
                 }
             };
-         
+
             var parameters = new Dictionary<string, object>();
             parameters["fields"] = "first_name,last_name,email";
 
             fb.GetAsync("me", parameters);
-         
+
         }
 
         private void Menu_FormClosing(object sender, FormClosingEventArgs e)
@@ -250,6 +251,60 @@ namespace WinTchat
                     lbl_rep.Text = test;
                 }
             }*/
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabControl1.SelectedTab == tabControl1.TabPages["tabPage2"])//your specific tabname
+            {
+                var connectionString = "mongodb://109.0.171.86:33333";
+                var client = new MongoClient(connectionString);
+                IMongoDatabase dbWintchat = client.GetDatabase("Wintchat");
+                var BsonFriends = dbWintchat.GetCollection<BsonDocument>("Friends");
+                var ListFriends = BsonFriends.Find(_ => true).ToList();
+                var BsonAuth_Users = dbWintchat.GetCollection<BsonDocument>("Auth_Users");
+                var ListAuth_Users = BsonAuth_Users.Find(_ => true).ToList();
+                for (int i = 0; i < ListFriends.Count; i++)
+                {
+                    if(ListFriends[i][1] == pseudo)
+                    {
+                        for (int j = 0; j < ListAuth_Users.Count; j++)
+                        {
+                            if (ListFriends[i][2] == ListAuth_Users[j][1])
+                            {
+                                var state = "";
+                                if(ListAuth_Users[j][10] == "True")
+                                {
+                                    state = "En ligne";
+                                } else
+                                {
+                                    state = "Déconnecté";
+                                }
+                                dataGridView1.Rows.Add(ListAuth_Users[j][1], ListAuth_Users[j][3], state);
+                            }
+                        }
+                        
+                   
+                    } else if(ListFriends[i][2] == pseudo) {
+                        for(int j = 0; j < ListAuth_Users.Count; j++)
+                        {
+                            if (ListFriends[i][1] == ListAuth_Users[j][1])
+                            {
+                                var state = "";
+                                if (ListAuth_Users[j][10] == "True")
+                                {
+                                    state = "En ligne";
+                                }
+                                else
+                                {
+                                    state = "Déconnecté";
+                                }
+                                dataGridView1.Rows.Add(ListAuth_Users[j][1], ListAuth_Users[j][3], state);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
