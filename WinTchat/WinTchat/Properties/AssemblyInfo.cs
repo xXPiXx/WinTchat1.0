@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // l'ensemble d'attributs suivant. Changez les valeurs de ces attributs pour modifier les informations
 // associées à un assembly.
 [assembly: AssemblyTitle("WinTchat")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("")] 
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("HP Inc.")]
 [assembly: AssemblyProduct("WinTchat")]
